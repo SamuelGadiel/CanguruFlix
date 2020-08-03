@@ -30,8 +30,11 @@ function CadastroCategoria() {
   }
 
   useEffect(() => {
-    const URL = 'http://localhost:8080/categoria';
-    fetch(URL)
+    const BACKEND_URL = window.location.hostname.includes('localhost')
+      ? 'http://localhost:8080/categoria'
+      : 'https://canguru-flix.herokuapp.com/categoria';
+
+    fetch(BACKEND_URL)
       .then(async (serverResponse) => {
         const jsonResponse = await serverResponse.json();
         setCategorias([
