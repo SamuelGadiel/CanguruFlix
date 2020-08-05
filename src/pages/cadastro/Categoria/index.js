@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
 import Button from '../../../components/Button';
+import useForm from '../../../hooks/useForm';
 
 function CadastroCategoria() {
   const valoresIniciais = {
@@ -11,27 +12,13 @@ function CadastroCategoria() {
     cor: '#000000',
   };
 
+  const { handleChange, values, clearForm } = useForm(valoresIniciais);
+
   const [categorias, setCategorias] = useState([]);
-  const [values, setValues] = useState(valoresIniciais);
-
-  function setValue(chave, valor) {
-    setValues({
-      ...values,
-      [chave]: valor,
-    });
-  }
-
-  function handleChange(data) {
-    const { name, value } = data.target;
-    setValue(
-      name,
-      value,
-    );
-  }
 
   useEffect(() => {
     const BACKEND_URL = window.location.hostname.includes('localhost')
-      ? 'http://localhost:8080/categoria'
+      ? 'http://localhost:8080/categorias'
       : 'https://canguru-flix.herokuapp.com/categoria';
 
     fetch(BACKEND_URL)
@@ -74,7 +61,7 @@ function CadastroCategoria() {
           ...categorias,
           values,
         ]);
-        setValues(valoresIniciais);
+        clearForm();
       }}
       >
 
@@ -113,8 +100,8 @@ function CadastroCategoria() {
 
       <ul>
         {categorias.map((categoria) => (
-          <li key={`${categoria.nome}`}>
-            {categoria.nome}
+          <li key={`${categoria.titulo}`}>
+            {categoria.titulo}
           </li>
         ))}
       </ul>
